@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <script type='text/javascript'>
+            var worker = new Worker("anagrammatist.js");
+            worker.onmessage = function(event) {
+                document.getElementById("box").innerHTML = event.data;
+            };
+            function update() {
+                var letters  = document.getElementById("letters").value.toLocaleUpperCase();
+                var anagram  = document.getElementById("anagram").value.toLocaleUpperCase();
+                worker.postMessage({letters:letters,anagram:anagram});
+            }
+        </script>
+        <div style='border:1px solid black;padding:10px'>
+        <div style='width:40%;min-width:300px;float:left;margin-bottom:10px'>
+            Input:
+            <input type="text" id="letters" value="" oninput="update()">
+        </div>
+        <div style='width:40%;min-width:300px;float:right;margin-bottom:10px'>
+            Anagram:
+            <input type="text" id="anagram" value="" oninput="update()">
+        </div>
+        <br/>
+        <div id='box' style='overflow-x:hidden;overflow-y:scroll;height:500px;clear:both'></div>
+        </div>
+    </body>
+</html>
