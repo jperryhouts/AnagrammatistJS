@@ -1,6 +1,7 @@
 importScripts('dictionary.js');
 var old_letters;
 var old_anagram;
+var dict_len = dict.length;
 
 onmessage = function(oEvent) {
     var letters = oEvent.data.letters;
@@ -11,9 +12,11 @@ onmessage = function(oEvent) {
     old_anagram = anagram;
     var available = Array(26).fill(0);
     var A = ("A").charCodeAt(0);
-    for (var i=0; i<letters.length; i++)
+    var llen = letters.length;
+    for (var i=0; i<llen; i++)
         try{ available[letters.charCodeAt(i)-A] += 1; } catch {}
-    for (var i=0; i<anagram.length; i++)
+    var alen = anagram.length;
+    for (var i=0; i<alen; i++)
         try{ available[anagram.charCodeAt(i)-A] -= 1; } catch {}
     var error = "";
     for (var i=0; i<26; i++)
@@ -25,7 +28,7 @@ onmessage = function(oEvent) {
         var num_avail = available.reduce(function(a,b){return a+b;},0);
         var t0 = performance.now();
         var msg = "";
-        for (var i=0;i<dict.length;i++) {
+        for (var i=0;i<dict_len;i++) {
             check: {
             for (var j=0;j<26;j++)
                 if (available[j]<dict[i][j])
